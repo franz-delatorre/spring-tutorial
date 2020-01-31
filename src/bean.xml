@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <bean id="pHaha" class="com.franz.aspect.PrintHaha"></bean>
+    <bean id="aspectHaha" class="com.franz.aspect.BeforePrinting"></bean>
+
+    <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" value="pHaha"></property>
+        <property name="interceptorNames">
+            <list>
+                <value>aspectHaha</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="franz" class="com.franz.components.Person">
+        <constructor-arg value="Franz" ></constructor-arg>
+    </bean>
+
+    <bean id="doggo" class="com.franz.components.Pet">
+        <constructor-arg value="Doggo"></constructor-arg>
+    </bean>
+
+    <bean id="todo" class="com.franz.components.ToDo">
+        <constructor-arg>
+            <list>
+                <value>Wash clothes</value>
+                <value>Iron clothes</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="franzVincent" class="com.franz.components.Person">
+        <constructor-arg value="Franz"></constructor-arg>
+        <constructor-arg value="Vincent"></constructor-arg>
+        <constructor-arg>
+            <ref bean="doggo"></ref>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="todo"></ref>
+        </constructor-arg>
+    </bean>
+
+    <bean id="personList" class="com.franz.components.PersonsList">
+        <constructor-arg>
+            <list>
+                <ref bean="franz"></ref>
+                <ref bean="franzVincent"></ref>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="myMap" class="com.franz.components.KeyValue">
+        <constructor-arg>
+            <map>
+                <entry key="firstName" value-ref="franz"></entry>
+                <entry key="lastName" value-ref="franzVincent"></entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="engDept" class="com.franz.setter_examples.Department">
+        <property name="departmentName" value="Engineering Department"></property>
+    </bean>
+    
+    <bean id="emp1" class="com.franz.setter_examples.Employee">
+        <property name="id">
+            <value>1</value>
+        </property>
+        <property name="name">
+            <value>Franz</value>
+        </property>
+        <property name="department" ref="engDept"></property>
+    </bean>
+
+    <bean id="b" class="com.franz.autowiring.B">
+        <constructor-arg value="yep this is b"></constructor-arg>
+    </bean>
+
+    <bean id="a" class="com.franz.autowiring.A" autowire="byName"></bean>
+
+</beans>
